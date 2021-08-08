@@ -12,7 +12,7 @@ const AddTodo = ({ addTodo }) => {
         e.preventDefault();
         if (!content) {
             toast({
-                title: 'No content',
+                title: 'Agrega tu tarea',
                 status: 'error',
                 duration: 2000,
                 isClosable: true,

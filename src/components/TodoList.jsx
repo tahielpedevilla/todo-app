@@ -15,7 +15,7 @@ const TodoList = ({ todos, deleteTodo }) => {
     if (!todos.length) {
         return (
             <Badge colorScheme='red' p='4' m='4' borderRadius='lg'>
-                ¡No tenes tareas pendientes!
+                ¡Nada pendiente! 😉
             </Badge>
         );
     }
