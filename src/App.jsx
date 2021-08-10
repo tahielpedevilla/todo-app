@@ -1,32 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import TodoList from './components/TodoList';
 import AddTodo from './components/AddTodo';
-import { Heading } from '@chakra-ui/react';
-import { VStack, IconButton, useColorMode } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import { VStack, IconButton, useColorMode, Heading, HStack } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { FaUser } from '@react-icons/all-files/fa/FaUser';
+import { FaRegUser } from '@react-icons/all-files/fa/FaRegUser';
+import { db } from '../firebase_config';
 
 const App = () => {
 
-  const initialTodos = [
-    {
-      id: 1,
-      body: 'get bread',
-    },
-    {
-      id: 2,
-      body: 'get butter',
-    },
-  ];
+  const [todos, setTodos] = useState([]);
 
-  const [todos, setTodos] = useState(
-    () => JSON.parse(localStorage.getItem('todos')) || []
-  );
 
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }, [todos]);
 
+  //Obtener todo
+  function getTodos() {
+    db.collection("todos").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+      });
+    });
+  }
+
+  // Delete todo
   function deleteTodo(id) {
     const newTodos = todos.filter((todo) => {
       return todo.id !== id;
@@ -34,6 +30,9 @@ const App = () => {
     setTodos(newTodos);
   }
 
+  useEffect(() => { getTodos() }, []);
+
+  // Add todo
   function addTodo(todo) {
     setTodos([...todos, todo]);
   }
@@ -42,14 +41,22 @@ const App = () => {
 
   return (
     <VStack p={4}>
-      <IconButton
-        icon={colorMode === 'light' ? <SunIcon /> : <MoonIcon />}
-        isRound='true'
-        size='lg'
-        alignSelf='flex-end'
-        me='1'
-        onClick={toggleColorMode}
-      />
+      <HStack spacing={3} alignSelf='flex-end'>
+        <IconButton
+          icon={colorMode === 'light' ? <FaRegUser /> : <FaUser />}
+          isRound='true'
+          size='lg'
+          alignSelf='flex-end'
+        />
+        <IconButton
+          icon={colorMode === 'light' ? <SunIcon /> : <MoonIcon />}
+          isRound='true'
+          size='lg'
+          alignSelf='flex-end'
+          me='1'
+          onClick={toggleColorMode}
+        />
+      </HStack>
       <Heading
         mb='8'
         fontWeight='extrabold'

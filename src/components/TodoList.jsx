@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     HStack,
     VStack,
@@ -33,11 +33,11 @@ const TodoList = ({ todos, deleteTodo }) => {
         >
             {todos.map((todo) => (
                 <HStack key={todo.id}>
-                    <Text>{todo.body}</Text>
+                    <Text>{todo.todo}</Text>
                     <Spacer />
                     <IconButton
                         icon={<DeleteIcon />}
-                        onClick={() => deleteTodo(todo.id)}
+                        onClick={deleteTodo}
                     />
                 </HStack>
             ))}
